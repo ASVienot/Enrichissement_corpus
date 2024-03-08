@@ -15,3 +15,8 @@ o Prédire automatiquement (avec l’apprentissage de surface Weka, Scikit Learn
  Tour de parole et phrase : text classification, token : token classification ?
  Réfléchir sur les propriétés linguistique (features) à ajouter
  Test, entraînement, évaluation / validation croisée
+
+##Outils 
+__TXM-TEI__: 
+ https://groupes.renater.fr/wiki/txm-info/public/xml_tei_txm
+ _Pour la compréhension des annotations faites dans le corpus_
