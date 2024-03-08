@@ -1,7 +1,4 @@
 # Enrichissement_corpus
-<<<<<<< HEAD
-## Projet Corpus - Comptes-rendus du Conseil d'Administration 
-=======
 ## Projet Corpus PV de CA
 
 ## Instructions :
@@ -18,4 +15,3 @@ o Prédire automatiquement (avec l’apprentissage de surface Weka, Scikit Learn
  Tour de parole et phrase : text classification, token : token classification ?
  Réfléchir sur les propriétés linguistique (features) à ajouter
  Test, entraînement, évaluation / validation croisée
->>>>>>> 2552d79 (ajout des instructions projet)
