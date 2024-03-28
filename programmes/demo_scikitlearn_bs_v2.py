@@ -26,6 +26,8 @@ class ToursParole:
     nb_phrases: int
     phrases: List[Phrase]
 
+#COMMANDE POUR LANCER : python demo_scikitlearn_bs_v2.py seance.xml
+
 def extraction_tours_parole(chemin_fichier):
 
     with open (chemin_fichier, 'r') as tei: 
