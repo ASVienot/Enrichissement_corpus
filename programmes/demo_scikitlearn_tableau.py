@@ -18,6 +18,7 @@ class Token:
 @dataclass
 class Phrase:
     info_phrase: str
+    desaccord : bool
     tokens: List[Token]
 @dataclass
 class ToursParole:
@@ -47,16 +48,22 @@ def extraction_tours_parole(chemin_fichier):
             for s_tag in rda_tag.find_all("s"):
                 words = s_tag.find_all("w")
                 texte_parties = []
+                tok_desaccord = 0 
                 for w in words:
                     txm_form = w.find("txm:form")
+                    ana_tag = w.find("txm:ana", {"resp":"#adm-sitri"})
                     if txm_form is not None and txm_form.text is not None:
                         texte_parties.append(txm_form.text)
                         token = Token(form=txm_form.text)
+                        if ana_tag is not None and ana_tag.text is not None and ana_tag.text == "D":
+                            tok_desaccord += 1 
                         
+
+                desaccord = True if tok_desaccord > 0 else False        
                 texte = ' '.join(texte_parties)
                 id_phrase = s_tag.get('xml:id', "")
                 info_phrase = (id_phrase, texte)
-                phrase = Phrase(info_phrase=info_phrase, tokens=texte_parties)
+                phrase = Phrase(info_phrase=info_phrase, desaccord=desaccord, tokens=texte_parties)
                 liste_phrases_par_rda.append(phrase)
                 
             
@@ -84,11 +91,11 @@ def creation_tableau():
     liste_tours_parole = extraction_tours_parole(chemin_fichier=sys.argv[1])
     with open("exemple.csv", "w") as fichier:
         structure = csv.writer(fichier, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        structure.writerow(["Tour", "Id_phrase", "phrase"])
+        structure.writerow(["Tour", "Id_phrase", "phrase", "désaccord"])
         for tour in liste_tours_parole:
             for phrase in tour.phrases:
-                structure.writerow([tour.id_rda, phrase.info_phrase[0], phrase.info_phrase[1]])
-                print(f"{tour.id_rda}\t{phrase.info_phrase[0]}\t{phrase.info_phrase[1]}")
+                structure.writerow([tour.id_rda, phrase.info_phrase[0], phrase.info_phrase[1], phrase.desaccord])
+                print(f"{tour.id_rda}\t{phrase.info_phrase[0]}\t{phrase.info_phrase[1]}\t{phrase.desaccord}")
 
 creation_tableau()
 
