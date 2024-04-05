@@ -19,6 +19,11 @@ Nombre de fichiers : 50 comptes-rendus (1984-2002)
 Début du rapport 
 tests des scripts sur corpus complets
 
+2 815 682
+  351 960
+      905
+
+
 
 # Présentation 
 3 mai - 14h 
