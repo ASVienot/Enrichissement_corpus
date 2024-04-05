@@ -16,8 +16,15 @@ Nombre de fichiers : 50 comptes-rendus (1984-2002)
 
 05/04 
 # Alix 
-Weiqi -> par
+Début du rapport 
+tests des scripts sur corpus complets
 
+
+# Présentation 
+3 mai - 14h 
+-> PAS DES TALISTES 
+-> Présentation des annotations 
+-> PowerPoint 
 
 # Rapport 
 
@@ -49,6 +56,12 @@ Nous avons choisi d'entrainer la machine sur X % du corpus.
 
 ## Conclusion 
 Le corpus est nul et non avenu.
+
+## Difficultés rencontrés 
+- manque d'information sur le corpus
+- Compréhension du but du projet
+- L'annotation n'est pas complète et peu de tokens portent l'information du désaccord
+
 
 
 
