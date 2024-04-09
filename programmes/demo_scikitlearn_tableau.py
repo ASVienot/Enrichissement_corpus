@@ -70,10 +70,12 @@ def extraction_tours_parole(chemin_fichier):
     nb_tours_parole = len(liste_tours_parole)
     info_seance = Seance(id_seance=id_seance, nb_tours_parole=nb_tours_parole)
 
+
     print(f"id_seance = {info_seance.id_seance}, nb_tours_parole = {info_seance.nb_tours_parole}")
     for tour in liste_tours_parole:
         print(f"Id_tour : {tour.id_rda}, Personne: {tour.nom}, sexe: {tour.sex}, label: {tour.label}, nb_phrases: {tour.nb_phrases}, phrase: {[phrase.info_phrase for phrase in tour.phrases]}, tokens par phrase : {[phrase.tokens for phrase in tour.phrases]}" )
         print("-"*100)
+
     return liste_tours_parole        
 
 
@@ -94,4 +96,3 @@ def creation_tableau():
 
 creation_tableau()
 """
-##################################################################
