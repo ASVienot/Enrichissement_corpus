@@ -19,7 +19,7 @@ def entrainement():
 
     french_stop_words = stopwords.words('french')
 
-    train_dataframe = pd.read_csv('train.csv', header=0, usecols=[2,3], names=['phrase','désaccord'])
+    train_dataframe = pd.read_csv('traintotal.csv', header=0, usecols=[2,4], names=['phrase','accord'])
     train_dataframe = train_dataframe.dropna(subset=['phrase'])
 
 
@@ -30,15 +30,15 @@ def entrainement():
     # La pipeline permet de faire passer ce qui est vectorisé dans le modèle Multinomial.S
 
     # Permet d'entraîner le modèle
-    model.fit(train_dataframe['phrase'], train_dataframe['désaccord'])
+    model.fit(train_dataframe['phrase'], train_dataframe['accord'])
     # On "fit" les données d'entrainement et les données cibles.
     # On dit que ces données vectorisées sont associées à telle ou telle réponse.
 
 
     # On récupère les données du fichier test hop hop hop ! 
-    test_dataframe = pd.read_csv('test.csv', header=0, usecols=[2,3], names=['phrase','désaccord'])
+    test_dataframe = pd.read_csv('testtotal.csv', header=0, usecols=[2,4], names=['phrase','accord'])
     test_dataframe = test_dataframe.dropna(subset=['phrase'])
-    liste_vraies_valeurs = test_dataframe['désaccord'].to_list()
+    liste_vraies_valeurs = test_dataframe['accord'].to_list()
     test_evaluation = model.predict(test_dataframe['phrase'])
     # On lui donne le même genre de données que dans le train.
     # ET EN GROS ! le modèle s'entraine ici sur la colonne 'phrase'.
@@ -53,19 +53,19 @@ def entrainement():
             print(f"Vraie valeur : {i} \t Prédiction modèle : {j}")
     print(e)
 
-    print("Taux d'accuracy :", accuracy_score(test_dataframe['désaccord'], test_evaluation))
+    print("Taux d'accuracy :", accuracy_score(test_dataframe['accord'], test_evaluation))
 
     return test_evaluation, test_dataframe
-    # 216 lignes dans test.csv
-    # 10 erreurs
-    # taux_accuracy = Taux d'accuracy : 0.9537037037037037 donc ça semble logique ?
+    # 32328 lignes dans totaltest.csv
+    # 190 erreurs
+    # taux_accuracy = Taux d'accuracy : 0.9941227418955704 donc ça semble logique ?
 
 
 # Création d'une matrice de confusion et d'une heatmap oh lala : 
 def matrice_de_confusion(test_evaluation, test_dataframe):
 
 
-    matrice = confusion_matrix(test_dataframe['désaccord'], test_evaluation)
+    matrice = confusion_matrix(test_dataframe['accord'], test_evaluation)
     sns.heatmap(matrice, square=True, annot=True, fmt='d', cbar=False,  xticklabels=['Accord (A)', 'Désaccord (D)'], yticklabels=['Accord (A)', 'Désaccord (D)'])
     plt.xlabel('Vraies valeurs')
     plt.ylabel('Valeurs prédites')

@@ -4,6 +4,7 @@ import sys
 import lxml
 from bs4 import BeautifulSoup
 import csv
+from my_minipack.loading import ft_progress
 
 
 @dataclass
@@ -37,10 +38,11 @@ def extraction_tours_parole(chemin_fichier):
     with open (chemin_fichier, 'r') as tei: 
         donnees = tei.read()
         soup = BeautifulSoup (donnees, 'lxml-xml')
-        #print(soup)
+        compteur_token = 0
         liste_tours_parole = []
         i = 1
-        for rda_tag in soup.find_all("rda"):
+
+        for rda_tag in ft_progress(soup.find_all("rda")):
             id_rda = i
             i += 1
             sex = rda_tag['sex']
@@ -53,7 +55,9 @@ def extraction_tours_parole(chemin_fichier):
                 texte_parties = []
                 liste_lemmes= []
                 tok_desaccord = 0 
+
                 for w in words:
+                    compteur_token += 1
                     txm_form = w.find("txm:form")
                     txm_lemme = w.find("txm:ana", {"type":"#udlemma"}) 
                     ana_tag = w.find("txm:ana", {"resp":"#adm-sitri"})
@@ -65,7 +69,7 @@ def extraction_tours_parole(chemin_fichier):
                     if ana_tag is not None and ana_tag.text is not None and ana_tag.text == "D":
                         tok_desaccord += 1 
                     
-
+                        
                 desaccord = "D" if tok_desaccord > 0 else "A"        
                 texte = ' '.join(texte_parties)
                 lemmes = ' '.join(liste_lemmes)
@@ -85,26 +89,29 @@ def extraction_tours_parole(chemin_fichier):
     nb_tours_parole = len(liste_tours_parole)
     info_seance = Seance(id_seance=id_seance, nb_tours_parole=nb_tours_parole)
 
-    #print(f"id_seance = {info_seance.id_seance}, nb_tours_parole = {info_seance.nb_tours_parole}")
-    #for tour in liste_tours_parole:
-        #print(f"Id_tour : {tour.id_rda}, Personne: {tour.nom}, sexe: {tour.sex}, label: {tour.label}, nb_phrases: {tour.nb_phrases}, phrase: {[phrase.info_phrase for phrase in tour.phrases]}, tokens par phrase : {[phrase.tokens for phrase in tour.phrases]}" )
-        #print("-"*100)
+
+    print(f"id_seance = {info_seance.id_seance}, nb_tours_parole = {info_seance.nb_tours_parole}")
+    for tour in liste_tours_parole:
+        print(f"Id_tour : {tour.id_rda}, Personne: {tour.nom}, sexe: {tour.sex}, label: {tour.label}, nb_phrases: {tour.nb_phrases}, phrase: {[phrase.info_phrase for phrase in tour.phrases]}, tokens par phrase : {[phrase.tokens for phrase in tour.phrases]}, désaccords : {[phrase.desaccord for phrase in tour.phrases]}" )
+        print("-"*100)
+
     return liste_tours_parole        
 
 
 
+##################################################################
+"""
+Need bug fix : Il faut pas utiliser chemin_fichier=sys.argv[1] car sinon on interprète "-h" comme un Path et non comme --help
 
-    
 def creation_tableau():
     liste_tours_parole = extraction_tours_parole(chemin_fichier=sys.argv[1])
-    with open("train.csv", "w") as fichier:
+    with open("exemple.csv", "w") as fichier:
         structure = csv.writer(fichier, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        structure.writerow(["Tour", "Id_phrase", "phrase", "désaccord", "lemmes"])
+        structure.writerow(["Tour", "Id_phrase", "phrase"])
         for tour in liste_tours_parole:
             for phrase in tour.phrases:
-                structure.writerow([tour.id_rda, phrase.info_phrase[0], phrase.info_phrase[1], phrase.desaccord, phrase.info_phrase[2]])
-                print(f"{tour.id_rda}\t{phrase.info_phrase[0]}\t{phrase.info_phrase[1]}\t{phrase.desaccord}\t {phrase.info_phrase[2]}")
+                structure.writerow([tour.id_rda, phrase.info_phrase[0], phrase.info_phrase[1]])
+                print(f"{tour.id_rda}\t{phrase.info_phrase[0]}\t{phrase.info_phrase[1]}")
 
 creation_tableau()
-
-                      
+"""
