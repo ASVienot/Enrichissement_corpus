@@ -13,13 +13,13 @@ def creation_tableau_parcours(dossier : Path):
         except:
             print(f'Erreur dans fichier {fichier}.')
 
-    with open("exemple.csv", "w") as fichier:
+    with open("taux_sexe.csv", "w") as fichier:
         structure = csv.writer(fichier, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        structure.writerow(["Tour", "Id_phrase", "phrase", "lemmes", "accord"])
+        structure.writerow(["Tour", "sexe", "Id_phrase", "phrase", "lemmes", "accord"])
         for tour in liste_tours_parole:
             for phrase in tour.phrases:
-                structure.writerow([tour.id_rda, phrase.info_phrase[0], phrase.info_phrase[1], phrase.info_phrase[2], phrase.desaccord])
-                print(f"{tour.id_rda}\t{phrase.info_phrase[0]}\t{phrase.info_phrase[1]}\t{phrase.desaccord}\t {phrase.info_phrase[2]}")
+                structure.writerow([tour.id_rda, tour.sex, phrase.info_phrase[0], phrase.info_phrase[1], phrase.info_phrase[2], phrase.desaccord])
+                print(f"{tour.id_rda}\t{tour.sex}\t{phrase.info_phrase[0]}\t{phrase.info_phrase[1]}\t{phrase.desaccord}\t {phrase.info_phrase[2]}")
 
 def main(dossier):
     creation_tableau_parcours(dossier)
